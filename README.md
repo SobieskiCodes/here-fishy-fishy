@@ -8,6 +8,8 @@ The rough idea of this bot is to stream /r/AquaSwap for posts in my state, and p
 Navigate to the main directory and fill out the `config.json`. (It's partially filled out)<br>
 Followed by `python3 -m main.py` to get it running.
 
+# Example usage
+![](C:\Users\jsobieski\PycharmProjects\free_fish_stuff\docs\pictures\J5L7qno.png)
 
 # Requirements
 It works on my computer.
@@ -20,25 +22,20 @@ asyncpraw 7.5.0
 
 
 
-#Current todo:<br>
+# Current todo:<br>
 ```
-add <sub> <string>
-add <sub> <regex> <string>
-add <sub> <channel> <string>
+- [x] add <sub> <string>
+- [ ] add <sub> <regex> <string>
+- [ ] add <sub> <channel> <string>
+- [ ] remove <sub> <string>
+- [ ] remove <sub> <regex> <string>
+- [ ] remove <sub> <channel> <string>
+- [ ] check different paths based on OS.
+- [ ] check if files/folders exist.
+- [ ] error handling and testing.
+- [ ] switch to aiosqlite
 ```
 
-Followed with a `remove` command.<br>
-
-Check different paths based on OS.
-
-Check if files/folders exist.
-
-Do some general house cleaning, error handling and testing.
-
-At some point I'd like to add the addition of `aiosqlite`<br>
-Although we will see minimal gain.<br>
-
-After the above is complete I'd like to ensure it works on both linux and windows then mark it as v1.0.
-
-Once it's reached a v1.0 status in my head I'll reach to create a github autoupdater.<br>
+# After v1...
+Once it's reached a v1.0 (all the above and probably then some) status in my head I'll reach to create a github autoupdater.<br>
 (When I push a changed to gitbub, the server will restart the script)<br>
