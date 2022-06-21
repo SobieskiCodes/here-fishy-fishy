@@ -1,0 +1,28 @@
+{
+    "keys": {
+        "discord": "discord token here",
+        "reddit_client_id": "application id here",
+        "reddit_client_secret": "secret here",
+        "reddit_user_agent": "definitely not a fish"
+    },
+    "guild": {
+        "guild_id": 245277342342184961,
+        "prefix": "]",
+        "ping_owner": true
+    },
+    "subsearch": {
+        "reddit_subs_to_watch": {
+            "AquaSwap": {
+                "regex": "michigan|\\bmi\\b|\\[mi]",
+                "discord_out_channel": 988789799324368937
+            },
+            "walrus": {
+                "regex": "michigan|\\bmi\\b|\\[mi]",
+                "discord_out_channel": 988789799324368937
+            }
+        }
+    },
+    "paths": {
+        "main_dir": "here_fishy_fishy/"
+    }
+}
