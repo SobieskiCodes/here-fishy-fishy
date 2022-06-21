@@ -15,10 +15,6 @@
             "AquaSwap": {
                 "regex": "michigan|\\bmi\\b|\\[mi]",
                 "discord_out_channel": 988789799324368937
-            },
-            "walrus": {
-                "regex": "michigan|\\bmi\\b|\\[mi]",
-                "discord_out_channel": 988789799324368937
             }
         }
     },
