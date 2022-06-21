@@ -9,7 +9,7 @@ Navigate to the main directory and fill out the `config.json`. (It's partially f
 Followed by `python3 -m main.py` to get it running.
 
 # Example usage
-![](C:\Users\jsobieski\PycharmProjects\free_fish_stuff\docs\pictures\J5L7qno.png)
+![](https://github.com/SobieskiCodes/here-fishy-fishy/blob/main/docs/pictures/J5L7qno.png?raw=true)
 
 # Requirements
 It works on my computer.
