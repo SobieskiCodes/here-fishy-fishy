@@ -2,6 +2,7 @@ from discord.ext import commands, tasks
 from here_fishy_fishy.main import config, path_dir
 import asyncprawcore
 import asyncpraw
+import asyncio
 import discord
 import json
 import re
@@ -49,39 +50,43 @@ class Fish(commands.Cog):
     @tasks.loop(reconnect=True)
     async def sub_crawl(self):
         for sub in self.fish_subs_to_watch.copy().keys():
-            exists = await self.check_if_sub_exists(sub)
-            if exists:
-                subreddit = await reddit.subreddit(sub)
-                async for submission in subreddit.stream.submissions():
-                    subreddit_title_regex = self.fish_regex(sub)
-                    output_channel = self.fish_channel(sub)
-                    get_matches = re.search(subreddit_title_regex, submission.title.lower())
-                    if get_matches:
-                        guild = self.bot.get_guild(self.bot.config.get("guild").get("guild_id"))
-                        channel = discord.utils.get(guild.channels, id=output_channel)
-                        check_old = [message.embeds[0].title for message in await channel.history(limit=100).flatten() if
-                                     message.embeds]
-                        if str(submission.title) not in check_old:
-                            if not channel:
-                                channel = [channel_name for channel_name in guild.channels if 'fish' in channel_name][0]
-                            description_text = submission.selftext if submission.selftext else submission.title
-                            ping_owner = f'<@{guild.owner_id}>' if '[ga]' in submission.title.lower() and \
-                                                                   self.ping_owner_status else '\n'
-                            e = discord.Embed(title=submission.title,
-                                              description=f"[{description_text}](https://reddit.com/{submission.permalink})"
-                                                          f"\n{ping_owner}",
-                                              colour=discord.Colour(0x278d89))
-                            if submission.url.endswith(('.jpg', '.png', '.gif', '.jpeg')):
-                                e.set_image(url=submission.url)
-                            await channel.send(embed=e)
-                        else:
-                            print(f"{submission.title} is already posted in {channel.name} @ {channel.id} in {guild.name}")
+            try:
+                exists = await self.check_if_sub_exists(sub)
+                if exists:
+                    subreddit = await reddit.subreddit(sub)
+                    async for submission in subreddit.stream.submissions():
+                        subreddit_title_regex = self.fish_regex(sub)
+                        output_channel = self.fish_channel(sub)
+                        get_matches = re.search(subreddit_title_regex, submission.title.lower())
+                        if get_matches:
+                            guild = self.bot.get_guild(self.bot.config.get("guild").get("guild_id"))
+                            channel = discord.utils.get(guild.channels, id=output_channel)
+                            check_old = [message.embeds[0].title for message in await channel.history(limit=100).flatten()
+                                         if message.embeds]
+                            if str(submission.title) not in check_old:
+                                if not channel:
+                                    channel = [channel_name for channel_name in guild.channels if 'fish' in channel_name][0]
+                                description_text = submission.selftext if submission.selftext else submission.title
+                                ping_owner = f'<@{guild.owner_id}>' if '[ga]' in submission.title.lower() and \
+                                                                       self.ping_owner_status else '\n'
+                                e = discord.Embed(title=submission.title,
+                                                  description=f"[{description_text}](https://reddit.com/{submission.permalink})"
+                                                              f"\n{ping_owner}",
+                                                  colour=discord.Colour(0x278d89))
+                                if submission.url.endswith(('.jpg', '.png', '.gif', '.jpeg')):
+                                    e.set_image(url=submission.url)
+                                await channel.send(embed=e)
+                            else:
+                                print(f"{submission.title} is already posted in {channel.name} @ {channel.id} in {guild.name}")
 
-            else:
-                print(f'{sub} doesnt exist, its been removed')
-                self.bot.config['subsearch']['reddit_subs_to_watch'].pop(sub, None)
-                self.save_config(self.bot.config)
-                self.fish_subs_to_watch.pop(sub, None)
+                else:
+                    print(f'{sub} doesnt exist, its been removed')
+                    self.bot.config['subsearch']['reddit_subs_to_watch'].pop(sub, None)
+                    self.save_config(self.bot.config)
+                    self.fish_subs_to_watch.pop(sub, None)
+            except Exception as ex:
+                print(ex)
+                await asyncio.sleep(3600)
 
     @sub_crawl.before_loop
     async def before_update(self):

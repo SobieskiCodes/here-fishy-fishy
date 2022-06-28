@@ -30,6 +30,7 @@ asyncpraw 7.5.0
 - [ ] remove <sub> <string>
 - [ ] remove <sub> <regex> <string>
 - [ ] remove <sub> <channel> <string>
+- [ ] allow for ignored users
 - [ ] check different paths based on OS.
 - [ ] check if files/folders exist.
 - [ ] error handling and testing.
