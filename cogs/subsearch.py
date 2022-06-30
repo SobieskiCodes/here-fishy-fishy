@@ -50,6 +50,7 @@ class Fish(commands.Cog):
     @tasks.loop(reconnect=True)
     async def sub_crawl(self):
         for sub in self.fish_subs_to_watch.copy().keys():
+            status = None
             try:
                 exists = await self.check_if_sub_exists(sub)
                 if exists:
@@ -76,17 +77,23 @@ class Fish(commands.Cog):
                                 if submission.url.endswith(('.jpg', '.png', '.gif', '.jpeg')):
                                     e.set_image(url=submission.url)
                                 await channel.send(embed=e)
+                                print(f"New post! {submission.title}\nhttps://reddit.com/{submission.permalink}")
                             else:
-                                print(f"{submission.title} is already posted in {channel.name} @ {channel.id} in {guild.name}")
+                                print(f"{submission.title} has already been posted in #{channel.name} ({guild.name})")
+                    status = True
 
                 else:
                     print(f'{sub} doesnt exist, its been removed')
                     self.bot.config['subsearch']['reddit_subs_to_watch'].pop(sub, None)
                     self.save_config(self.bot.config)
                     self.fish_subs_to_watch.pop(sub, None)
+
             except Exception as ex:
-                print(ex)
-                await asyncio.sleep(3600)
+                exc = f'{type(ex).__name__}: {ex} \n {ex.__class__}'
+                if not status and status != f"{ex} {exc}":
+                    status = f"{ex} {exc}"
+                    print(status)
+                await asyncio.sleep(60)
 
     @sub_crawl.before_loop
     async def before_update(self):

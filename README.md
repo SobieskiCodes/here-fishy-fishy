@@ -35,6 +35,8 @@ asyncpraw 7.5.0
 - [ ] check if files/folders exist.
 - [ ] error handling and testing.
 - [ ] switch to aiosqlite
+- [ ] toggle to handle only one error message, so it doesn't spam console
+- [ ] switch to aiosqlite
 ```
 
 # After v1...
